@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberWatch - Threat Intelligence Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header__content">
+                    <h1 class="header__title">
+                        <span class="header__icon">🛡️</span>
+                        CyberWatch
+                    </h1>
+                    <nav class="nav">
+                        <button class="nav__item active" data-tab="dashboard">Dashboard</button>
+                        <button class="nav__item" data-tab="emails">Email Management</button>
+                        <button class="nav__item" data-tab="config">Newsletter Config</button>
+                        <button class="nav__item" data-tab="analytics">Analytics</button>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <div class="container">
+                <!-- Dashboard Tab -->
+                <section id="dashboard" class="tab-content active">
+                    <div class="dashboard-header">
+                        <h2>Recent Cybersecurity Incidents</h2>
+                        <div class="dashboard-controls">
+                            <div class="search-box">
+                                <input type="text" class="form-control" placeholder="Search incidents..." id="searchInput">
+                            </div>
+                            <div class="filters">
+                                <select class="form-control" id="severityFilter">
+                                    <option value="">All Severities</option>
+                                    <option value="Critical">Critical</option>
+                                    <option value="High">High</option>
+                                    <option value="Medium">Medium</option>
+                                </select>
+                                <select class="form-control" id="industryFilter">
+                                    <option value="">All Industries</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="Healthcare">Healthcare</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="Manufacturing">Manufacturing</option>
+                                    <option value="Energy">Energy</option>
+                                    <option value="Insurance">Insurance</option>
+                                    <option value="Entertainment">Entertainment</option>
+                                    <option value="Telecommunications">Telecommunications</option>
+                                    <option value="Automotive">Automotive</option>
+                                </select>
+                                <select class="form-control" id="statusFilter">
+                                    <option value="">All Status</option>
+                                    <option value="Under Investigation">Under Investigation</option>
+                                    <option value="Resolved">Resolved</option>
+                                    <option value="Ongoing">Ongoing</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="incidents-grid" id="incidentsGrid">
+                        <!-- Incidents will be loaded here by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Email Management Tab -->
+                <section id="emails" class="tab-content">
+                    <div class="email-header">
+                        <h2>Newsletter Subscribers</h2>
+                        <div class="email-stats">
+                            <div class="stat-card">
+                                <span class="stat-number" id="totalSubscribers">3</span>
+                                <span class="stat-label">Total Subscribers</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number" id="activeSubscribers">3</span>
+                                <span class="stat-label">Active</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="email-controls">
+                        <button class="btn btn--primary" id="addEmailBtn">Add Subscriber</button>
+                        <button class="btn btn--secondary" id="importEmailsBtn">Import List</button>
+                        <button class="btn btn--outline" id="exportEmailsBtn">Export List</button>
+                    </div>
+
+                    <div class="subscribers-table">
+                        <table class="table" id="subscribersTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Date Added</th>
+                                    <th>Status</th>
+                                    <th>Article Links</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Subscribers will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Newsletter Config Tab -->
+                <section id="config" class="tab-content">
+                    <h2>Newsletter Configuration</h2>
+                    <div class="config-grid">
+                        <div class="config-section">
+                            <h3>Schedule Settings</h3>
+                            <div class="form-group">
+                                <label class="form-label">Frequency</label>
+                                <select class="form-control" id="frequency">
+                                    <option value="Weekly">Weekly</option>
+                                    <option value="Monthly">Monthly</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Send Day</label>
+                                <select class="form-control" id="sendDay">
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Send Time</label>
+                                <input type="time" class="form-control" id="sendTime" value="09:00">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <input type="checkbox" id="autoSend" checked> Enable Auto Send
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="config-section">
+                            <h3>Article Links Settings</h3>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <input type="checkbox" id="includeArticleLinks" checked> Include Article Links in Newsletters
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Maximum Sources per Incident</label>
+                                <select class="form-control" id="maxSources">
+                                    <option value="1">1 Source</option>
+                                    <option value="2">2 Sources</option>
+                                    <option value="3">3 Sources</option>
+                                    <option value="5">5 Sources</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <input type="checkbox" id="includeVendorAdvisories" checked> Include Vendor Advisories
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="config-section">
+                            <h3>Template Settings</h3>
+                            <div class="form-group">
+                                <label class="form-label">Template Style</label>
+                                <select class="form-control" id="template">
+                                    <option value="Professional">Professional</option>
+                                    <option value="Executive">Executive Summary</option>
+                                    <option value="Technical">Technical Details</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn--secondary" id="previewBtn">Preview Newsletter</button>
+                            </div>
+                        </div>
+
+                        <div class="config-section">
+                            <h3>Current Status</h3>
+                            <div class="status-info">
+                                <div class="info-item">
+                                    <span class="label">Last Sent:</span>
+                                    <span class="value" id="lastSent">September 2, 2025</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Next Scheduled:</span>
+                                    <span class="value" id="nextScheduled">September 9, 2025</span>
+                                </div>
+                            </div>
+                            <button class="btn btn--primary" id="saveConfigBtn">Save Configuration</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analytics Tab -->
+                <section id="analytics" class="tab-content">
+                    <h2>Threat Intelligence Analytics</h2>
+                    <div class="analytics-overview">
+                        <div class="stat-card-large">
+                            <span class="stat-number-large">157</span>
+                            <span class="stat-label-large">Total Incidents Tracked</span>
+                        </div>
+                        <div class="stat-card-large">
+                            <span class="stat-number-large">23</span>
+                            <span class="stat-label-large">This Month</span>
+                        </div>
+                        <div class="stat-card-large">
+                            <span class="stat-number-large">342</span>
+                            <span class="stat-label-large">Article Sources</span>
+                        </div>
+                        <div class="stat-card-large">
+                            <span class="stat-number-large">287</span>
+                            <span class="stat-label-large">Verified Sources</span>
+                        </div>
+                    </div>
+
+                    <div class="charts-grid">
+                        <div class="chart-container" style="position: relative; height: 400px;">
+                            <h3>Monthly Incident Trend</h3>
+                            <canvas id="trendChart"></canvas>
+                        </div>
+                        
+                        <div class="chart-container" style="position: relative; height: 400px;">
+                            <h3>Threat Types Distribution</h3>
+                            <canvas id="threatChart"></canvas>
+                        </div>
+
+                        <div class="chart-container" style="position: relative; height: 400px;">
+                            <h3>Industries Affected</h3>
+                            <canvas id="industryChart"></canvas>
+                        </div>
+
+                        <div class="chart-container" style="position: relative; height: 400px;">
+                            <h3>Severity Breakdown</h3>
+                            <canvas id="severityChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Incident Detail Modal -->
+        <div class="modal hidden" id="incidentModal">
+            <div class="modal-overlay" id="modalOverlay"></div>
+            <div class="modal-content modal-content--large">
+                <div class="modal-header">
+                    <h2 id="modalTitle">Incident Details</h2>
+                    <button class="modal-close" id="modalClose">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="incident-detail">
+                        <div class="detail-section">
+                            <h3>Overview</h3>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <span class="detail-label">Company:</span>
+                                    <span class="detail-value" id="detailCompany"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Date:</span>
+                                    <span class="detail-value" id="detailDate"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Type:</span>
+                                    <span class="detail-value" id="detailType"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Severity:</span>
+                                    <span class="detail-value" id="detailSeverity"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Users Affected:</span>
+                                    <span class="detail-value" id="detailUsers"></span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Financial Impact:</span>
+                                    <span class="detail-value" id="detailImpact"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h3>Description</h3>
+                            <p id="detailDescription"></p>
+                        </div>
+
+                        <div class="detail-section">
+                            <h3>Technical Details</h3>
+                            <p id="detailTechnical"></p>
+                        </div>
+
+                        <div class="detail-section" id="sourcesContainer">
+                            <!-- Sources and references will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Email Modal -->
+        <div class="modal hidden" id="addEmailModal">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Add New Subscriber</h2>
+                    <button class="modal-close" id="addEmailModalClose">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="addEmailForm">
+                        <div class="form-group">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" id="newSubscriberName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="newSubscriberEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox" id="newSubscriberIncludeLinks" checked> Include Article Links in Newsletters
+                            </label>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn--outline" id="cancelAddEmail">Cancel</button>
+                            <button type="submit" class="btn btn--primary">Add Subscriber</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Newsletter Preview Modal -->
+        <div class="modal hidden" id="previewModal">
+            <div class="modal-overlay"></div>
+            <div class="modal-content modal-content--extra-large">
+                <div class="modal-header">
+                    <h2>Newsletter Preview</h2>
+                    <button class="modal-close" id="previewModalClose">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="newsletter-preview" id="newsletterPreview">
+                        <!-- Newsletter content will be generated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
